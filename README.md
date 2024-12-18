@@ -1,5 +1,4 @@
 # OCR Simulator
-# OCR Simulator
 
 This library for simulating OCR (Optical Character Recognition) effects by converting text to images with various degradation conditions. This library helps generate synthetic OCR training data or test OCR systems under different text conditions.
 
