@@ -41,6 +41,15 @@ sudo curl -L https://github.com/tesseract-ocr/tessdata/raw/main/fra.traineddata 
 (Change the language name)
  ```
 ## Run Demo
+1. Clone the Repository:
+ ```
+git clone https://github.com/yiniwa/ocr_simulator.git
+ ```
+2. Navigate to the Directory:
+ ```
+cd ocr-simulator
+ ```
+3. Run Demo
  ```
 python -m ocr_simulator.examples.demo
  ```
