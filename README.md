@@ -29,7 +29,7 @@ This library for simulating OCR (Optical Character Recognition) effects by conve
 ### macOS
 1. Install Tesseract:
    ```bash
-   brew install tesseract
+brew install tesseract
     ```
 2. Check which languages you have 
  ```
