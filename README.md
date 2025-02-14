@@ -58,7 +58,7 @@ python -m ocr_simulator.examples.demo
 from ocr_simulator import OCRSimulator
 
 # Initialize simulator
-simulator = OCRSimulator(condition='simple')
+simulator = OCRSimulator(condition='Minimal Noise')
 
 # Process single text
 result = simulator.process_single_text(
