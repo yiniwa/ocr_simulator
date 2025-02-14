@@ -8,7 +8,7 @@ This library for simulating OCR (Optical Character Recognition) effects by conve
 - **Minimal Noise**: Clean text rendering
 - **BlackLetter**: Historical font simulation
 - **Scanned Distorted Noise**: Geometric distortions and skewing
-- **Salt and Pepper**: some pixels in the image randomly turn black (pepper) or white (salt)
+- **Salt and Pepper**: Some pixels in the image randomly turn black (pepper) or white (salt)
 
 ### Flexible Input Formats
 - Single text strings
