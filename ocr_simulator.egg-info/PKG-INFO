@@ -1,3 +1,17 @@
+Metadata-Version: 2.1
+Name: ocr-simulator
+Version: 0.1.0
+Summary: OCR Simulator with various text effects
+Home-page: https://github.com/yourusername/ocr-simulator
+Author: Your Name
+Author-email: your.email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# OCR Simulator
 # OCR Simulator
 
 This library for simulating OCR (Optical Character Recognition) effects by converting text to images with various degradation conditions. This library helps generate synthetic OCR training data or test OCR systems under different text conditions.
@@ -28,9 +42,9 @@ This library for simulating OCR (Optical Character Recognition) effects by conve
 
 ### macOS
 1. Install Tesseract:
-```
-brew install tesseract
-```
+   ```bash
+   brew install tesseract
+    ```
 2. Check which languages you have 
  ```
 tesseract --list-langs
@@ -41,15 +55,6 @@ sudo curl -L https://github.com/tesseract-ocr/tessdata/raw/main/fra.traineddata 
 (Change the language name)
  ```
 ## Run Demo
-1. Clone the Repository:
- ```
-git clone https://github.com/yiniwa/ocr_simulator.git
- ```
-2. Navigate to the Directory:
- ```
-cd ocr-simulator
- ```
-3. Run Demo
  ```
 python -m ocr_simulator.examples.demo
  ```

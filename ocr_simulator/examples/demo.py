@@ -26,25 +26,25 @@ def ensure_output_dir(base_dir: str) -> str:
         return temp_dir
 
 
-def demo_simple_text():
+def demo_minimal_noise_text():
     """Demo using single text input."""
-    print("\n=== Demo 1: Simple Text Processing ===")
+    print("\n=== Demo 1: Minimal Noise Text Processing ===")
 
-    output_dir = ensure_output_dir("ocr_output/simple")
+    output_dir = ensure_output_dir("ocr_output/Minimal_Noise")
 
     simulator = OCRSimulator(
-        condition='simple',
+        condition='Minimal Noise',
         language='eng',
         save_images=True,
         output_dir=output_dir
     )
 
-    text = "This is a sample text for OCR simulation."
+    text = "This is a Minimal Noise text for OCR simulation."
     result = simulator.process_input(
         text,
         input_type='text',
         save_image=True,
-        image_filename=os.path.join(output_dir, "sample.png")
+        image_filename=os.path.join(output_dir, "Minimal_Noise.png")
     )
 
     print(f"Original text: {result['original_text']}")
@@ -55,12 +55,12 @@ def demo_blackletter():
     """Demo using blackletter font."""
     print("\n=== Demo 2: Blackletter Font Processing ===")
 
-    output_dir = ensure_output_dir("ocr_output/blackletter")
+    output_dir = ensure_output_dir("ocr_output/Blackletter")
 
     simulator = OCRSimulator(
-        condition='blackletter',
+        condition='BlackLetter',  # Correct capitalization
         language='deu',
-        font_path="/Library/Fonts/Canterbury.ttf",  # Update with your font path
+        font_path="/Library/Fonts/Canterbury.ttf",
         save_images=True,
         output_dir=output_dir
     )
@@ -74,12 +74,12 @@ def demo_blackletter():
 
 def demo_distorted():
     """Demo using distorted text."""
-    print("\n=== Demo 3: Distorted Text Processing ===")
+    print("\n=== Demo 3: Scanned Distorted Noise Text Processing ===")
 
-    output_dir = ensure_output_dir("ocr_output/distorted")
+    output_dir = ensure_output_dir("ocr_output/Scanned_Distorted_Noise")
 
     simulator = OCRSimulator(
-        condition='distorted',
+        condition='Scanned Distorted Noise',
         language='eng',
         save_images=True,
         output_dir=output_dir,
@@ -104,20 +104,20 @@ def demo_distorted():
     results = simulator.process_dataframe(
         df,
         output_csv=os.path.join(output_dir, "results.csv"),
-        image_prefix="distorted"
+        image_prefix="Scanned_Distorted_Noise"
     )
-    print("\nProcessed multiple texts with distortion:")
+    print("\nProcessed multiple texts with Scanned Distorted Noise:")
     print(results)
 
 
-def demo_noisy():
-    """Demo using noisy background."""
-    print("\n=== Demo 4: Noisy Background Processing ===")
+def demo_salt_and_pepper():
+    """Demo using Salt and Pepper."""
+    print("\n=== Demo 4: Salt and Pepper Processing ===")
 
-    output_dir = ensure_output_dir("ocr_output/noisy")
+    output_dir = ensure_output_dir("ocr_output/Salt_and_Pepper")
 
     simulator = OCRSimulator(
-        condition='noisy',
+        condition='Salt and Pepper',
         language='eng',
         save_images=True,
         output_dir=output_dir,
@@ -136,19 +136,19 @@ def demo_noisy():
     results = simulator.process_dataframe(
         df,
         output_csv=os.path.join(output_dir, "results.csv"),
-        image_prefix="noisy"
+        image_prefix="Salt_and_Pepper"
     )
-    print("\nProcessed DataFrame with noise:")
+    print("\nProcessed DataFrame with Salt and Pepper:")
     print(results)
 
 
 def main():
     """Run all demos."""
     try:
-        demo_simple_text()
+        demo_minimal_noise_text()
         demo_blackletter()
         demo_distorted()
-        demo_noisy()
+        demo_salt_and_pepper()
     except Exception as e:
         print(f"\nError running demo: {e}")
         print("Please check disk space and permissions.")

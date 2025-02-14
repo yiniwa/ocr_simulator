@@ -10,9 +10,9 @@ def apply_effects(
     config: Dict
 ) -> Image.Image:
     """Apply effects based on condition."""
-    if condition == 'Salt and Pepper':
+    if condition == 'noisy':
         return apply_salt_and_pepper(image, config['dot_density'])
-    elif condition == 'Scanned Distorted Noise':
+    elif condition == 'distorted':
         return apply_distortions(image, config)
     return image
 

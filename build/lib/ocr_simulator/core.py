@@ -15,15 +15,17 @@ from .effects import apply_effects
 from .utils import ensure_directory
 
 
+# Update the OCRSimulator class initialization in core.py
+
 class OCRSimulator:
     """A comprehensive OCR simulator supporting multiple conditions."""
 
     SUPPORTED_CONDITIONS: List[str] = [
-        'Minimal Noise', 'BlackLetter', 'Scanned Distorted Noise', 'Salt and Pepper']
+        'simple', 'blackletter', 'distorted', 'noisy']
 
     def __init__(
         self,
-        condition: str = 'Minimal Noise',
+        condition: str = 'simple',
         language: str = "eng",
         font_path: Optional[str] = None,
         font_size: int = 10,
@@ -32,6 +34,7 @@ class OCRSimulator:
         output_dir: Optional[str] = None,
         n_jobs: int = -1,
         config: Optional[Dict] = None,
+        # Add new parameters
         image_width: Optional[int] = None,
         image_height: Optional[int] = None,
         margin: float = 0.5
@@ -73,7 +76,7 @@ class OCRSimulator:
         self.font_size_px = int(font_size * dpi / 72)
         self.margin_px = int(self.margin_multiplier * self.dpi)
         self.max_width_px = (image_width if image_width else
-                             int(6 * self.dpi) - 2 * self.margin_px)
+                             int(8.5 * self.dpi) - 2 * self.margin_px)
 
         # Set default configuration
         self.config = self._get_default_config()
@@ -99,15 +102,15 @@ class OCRSimulator:
 
     def _get_default_config(self) -> Dict:
         """Get default configuration based on condition."""
-        if self.condition == 'Minimal Noise':
+        if self.condition == 'simple':
             return {}
 
-        elif self.condition == 'Blackletter':
+        elif self.condition == 'blackletter':
             return {
                 'font_multiplier': 1.2
             }
 
-        elif self.condition == 'Scanned Distorted Noise':
+        elif self.condition == 'distorted':
             return {
                 'skew_range': (-0.06, 0.06),
                 'incomplete_prob': 0.15,
@@ -126,7 +129,7 @@ class OCRSimulator:
         """Get the appropriate font path."""
         if font_path:
             return font_path
-        if self.condition == 'Blackletter':
+        if self.condition == 'blackletter':
             return self.lang_config['blackletter_font']
         return self.lang_config['default_font']
 
@@ -168,7 +171,7 @@ class OCRSimulator:
         else:
             image_width_px = int(
                 (text_width_px + 2 * self.margin_px) / self.dpi * self.dpi)
-            if self.condition in ['Scanned Distorted Noise']:
+            if self.condition in ['distorted']:
                 image_width_px = int(image_width_px * 1.2)
 
         if self.custom_height:
@@ -176,7 +179,7 @@ class OCRSimulator:
         else:
             image_height_px = int(
                 (text_height_px + 2 * self.margin_px) / self.dpi * self.dpi)
-            if self.condition in ['Scanned Distorted Noise']:
+            if self.condition in ['distorted']:
                 image_height_px = int(image_height_px * 1.2)
 
         # Create image
@@ -191,24 +194,23 @@ class OCRSimulator:
             x_offset = self.margin_px
             y_offset = self.margin_px
 
-            # Draw text with consistent line spacing
-            y_text = y_offset
-            line_spacing = 35  # Define the line spacing here
-            for line in wrapped_text:
-                x_text = x_offset
+        # Draw text
+        y_text = y_offset
+        for line in wrapped_text:
+            x_text = x_offset
 
-                if self.condition == 'Scanned Distorted Noise':
-                    skew_factor = random.uniform(
-                        self.config['skew_range'][0],
-                        self.config['skew_range'][1]
-                    )
-                    x_text += int(skew_factor * y_text)
+            if self.condition == 'distorted':
+                skew_factor = random.uniform(
+                    self.config['skew_range'][0],
+                    self.config['skew_range'][1]
+                )
+                x_text += int(skew_factor * y_text)
 
-                draw.text((x_text, y_text), line, font=font, fill=text_color)
-                y_text += line_spacing  # Use fixed line spacing here
+            draw.text((x_text, y_text), line, font=font, fill=text_color)
+            y_text += font.getbbox(line)[3] - font.getbbox(line)[1]
 
         # Apply effects
-        if self.condition != 'Minimal Noise':
+        if self.condition != 'simple':
             image = apply_effects(image, self.condition, self.config)
 
         # Save if requested
