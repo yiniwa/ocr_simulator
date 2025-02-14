@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 import shutil
 from ocr_simulator import OCRSimulator
-import pandas as pd
+from PIL import Image, ImageDraw, ImageFont
 
 
 def ensure_output_dir(base_dir: str) -> str:
@@ -35,73 +35,51 @@ def demo_with_custom_sizes():
 
     # Example 1: Large font with specific image size
     simulator_large = OCRSimulator(
-        condition='simple',
+        condition='Minimal Noise',
         language='eng',
         font_size=24,  # Larger font
         image_width=800,  # Fixed width
         image_height=400,  # Fixed height
+        dpi=300,  # Standard DPI for testing
         save_images=True,
         output_dir=output_dir
-    )
-
-    # Example 2: Custom margin with auto-sized image
-    simulator_margin = OCRSimulator(
-        condition='simple',
-        language='eng',
-        font_size=12,
-        margin=1.0,  # Larger margin
-        save_images=True,
-        output_dir=output_dir
-    )
-
-    # Example 3: Distorted text with fixed size
-    simulator_distorted = OCRSimulator(
-        condition='distorted',
-        language='eng',
-        font_size=16,
-        image_width=1000,
-        image_height=500,
-        save_images=True,
-        output_dir=output_dir,
-        config={
-            'skew_range': (-0.06, 0.06),
-            'incomplete_prob': 0.15,
-            'gap_range': (1, 3),
-            'text_noise_range': (-30, 30),
-            'bg_noise_prob': 0.05,
-            'bg_noise_range': (-10, 10)
-        }
     )
 
     test_text = "Testing custom size configurations for OCR simulation."
 
-    # Process with each configuration
-    result1 = simulator_large.process_single_text(
-        test_text,
-        save_image=True,
-        image_filename=os.path.join(output_dir, "large_font.png")
+    font = ImageFont.truetype(
+        simulator_large.font_path, simulator_large.font_size_px)
+    image = Image.new('RGB', (800, 400), color="white")
+    draw = ImageDraw.Draw(image)
+
+    text_position = (50, 150)
+    # Black text on white background
+    draw.text(text_position, test_text, font=font, fill="black")
+
+    image.save(os.path.join(output_dir, "large_font.png"))
+    print(
+        f"Image saved to: {os.path.join(output_dir, 'large_font.png')}")
+
+    # Example 2: Custom margin with auto-sized image
+    simulator_margin = OCRSimulator(
+        condition='Minimal Noise',
+        language='eng',
+        font_size=12,
+        margin=0.5,  # Standard margin
+        save_images=True,
+        output_dir=output_dir,
+        dpi=300  # Standard DPI
     )
-    print("\nLarge Font Configuration:")
-    print(f"Original text: {result1['original_text']}")
-    print(f"OCR output: {result1['ocr_text']}")
 
     result2 = simulator_margin.process_single_text(
         test_text,
         save_image=True,
         image_filename=os.path.join(output_dir, "large_margin.png")
     )
+
     print("\nLarge Margin Configuration:")
     print(f"Original text: {result2['original_text']}")
     print(f"OCR output: {result2['ocr_text']}")
-
-    result3 = simulator_distorted.process_single_text(
-        test_text,
-        save_image=True,
-        image_filename=os.path.join(output_dir, "fixed_size_distorted.png")
-    )
-    print("\nDistorted Fixed Size Configuration:")
-    print(f"Original text: {result3['original_text']}")
-    print(f"OCR output: {result3['ocr_text']}")
 
 
 def main():
